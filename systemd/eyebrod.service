@@ -1,0 +1,9 @@
+[Unit]
+Description=eyebrod
+
+[Service]
+ExecStart=/usr/bin/eyebrod
+Restart=always
+
+[Install]
+WantedBy=basic.target
