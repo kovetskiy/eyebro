@@ -9,7 +9,9 @@ function connect() {
         const command = event.data;
         if (command == "get_hostname") {
             chrome.tabs.getSelected(null, function(tab) {
-                websocket.send((new URL(tab.url)).hostname);
+                let hostname = (new URL(tab.url)).hostname;
+                hostname = hostname.replace(/^(www\.)/, "")
+                websocket.send(hostname);
             });
         } else {
             websocket.send("unknown command");
