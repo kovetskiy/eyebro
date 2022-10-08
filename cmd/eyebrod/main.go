@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"os"
 
@@ -109,6 +110,16 @@ func (rpc *RPC) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var args interface{}
+	rawArgs := r.URL.Query().Get("args")
+	if rawArgs != "" {
+		err := json.Unmarshal([]byte(rawArgs), &args)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+	}
+
 	if rpc.bus.Len("request") == 0 {
 		w.WriteHeader(http.StatusBadGateway)
 		return
@@ -117,8 +128,20 @@ func (rpc *RPC) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	responses, _ := rpc.bus.Subscribe("response")
 	defer rpc.bus.Close("response")
 
-	rpc.bus.Publish("request", command)
+	rpc.bus.Publish("request", encodeJSON(map[string]interface{}{
+		"command": command,
+		"args":    args,
+	}))
 
 	response := <-responses
 	w.Write([]byte(response.(string)))
+}
+
+func encodeJSON(obj interface{}) string {
+	data, err := json.Marshal(obj)
+	if err != nil {
+		panic(err)
+	}
+
+	return string(data)
 }

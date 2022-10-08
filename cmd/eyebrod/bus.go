@@ -1,6 +1,8 @@
 package main
 
-import "sync"
+import (
+	"sync"
+)
 
 type BusSubscription chan interface{}
 
@@ -32,7 +34,7 @@ func (bus *Bus) Subscribe(topic string) (BusSubscription, bool) {
 	return sub, ok
 }
 
-func (bus *Bus) Publish(topic string, data interface{}) {
+func (bus *Bus) Publish(topic string, data string) {
 	bus.mutex.Lock()
 	defer bus.mutex.Unlock()
 	if _, ok := bus.topics[topic]; !ok {
