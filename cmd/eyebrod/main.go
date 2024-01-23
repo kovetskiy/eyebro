@@ -93,6 +93,7 @@ func (socket *WebSocket) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 			err := c.WriteMessage(websocket.TextMessage, []byte(message))
 			if err != nil {
+				log.Errorf(err, "write message")
 				return
 			}
 		}

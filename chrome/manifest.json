@@ -1,14 +1,17 @@
 {
   "name": "Eye Bro",
   "description": "client for eyebrod",
-  "version": "2.1",
+  "version": "3.0",
   "permissions": [
-    "activeTab",
-    "tabs"
+    "tabs",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "ws://localhost:3451/*"
   ],
   "background": {
-    "scripts": ["background.js"],
-    "persistent": true
+    "service_worker": "background.js"
   },
-  "manifest_version": 2
+  "manifest_version": 3,
+  "action": {}
 }
