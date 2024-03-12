@@ -2,7 +2,8 @@ const addr = "ws://localhost:3451/ws";
 
 function connect() {
   console.log("[background] connecting to " + addr);
-  let websocket = new WebSocket(addr);
+  const websocket = new WebSocket(addr);
+  chrome.runtime.websocket = websocket;
 
   websocket.onopen = function () {
     console.log("[background] websocket connected");
@@ -45,10 +46,12 @@ function connect() {
 
   websocket.onclose = function () {
     console.log("[background] websocket closed");
-    websocket = null;
-    setTimeout(connect, 1000);
+    if (chrome.runtime.websocket) {
+      chrome.runtime.websocket = null;
+      setTimeout(connect, 1000);
+    }
   };
 }
 
+chrome.runtime.onStartup.addListener(connect);
 connect();
-
