@@ -4,7 +4,8 @@
   "version": "3.0",
   "permissions": [
     "tabs",
-    "activeTab"
+    "activeTab",
+    "webSocketPermissionRequest"
   ],
   "host_permissions": [
     "ws://localhost:3451/*"
