@@ -13,5 +13,11 @@
     "service_worker": "background.js"
   },
   "manifest_version": 3,
-  "action": {}
+  "action": {},
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content_script.js"]
+    }
+  ]
 }
